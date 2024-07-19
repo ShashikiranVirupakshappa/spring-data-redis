@@ -1,15 +1,9 @@
 package com.javabro.springdataredis.repository;
 
 import com.javabro.springdataredis.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface ProductRepository {
-    public Product saveProduct(Product product);
-    public List<Product> getAllProducts();
-    public Product getProductById(Integer id);
-    public void deleteProduct(Integer id);
-    public Product updateProduct(Product product, Integer id);
-
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
 }

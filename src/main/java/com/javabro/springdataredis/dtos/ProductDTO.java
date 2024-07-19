@@ -1,9 +1,5 @@
-package com.javabro.springdataredis.model;
+package com.javabro.springdataredis.dtos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +12,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-public class Product implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@RedisHash(value = "product")
+public class ProductDTO implements Serializable {
     private Long id;
     private String name;
     private Integer quantity;
