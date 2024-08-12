@@ -36,6 +36,7 @@ public class ProductController {
     }
 
     @DeleteMapping("{id}")
+    //fixed cache evict issue when delete api is called to delete certain id specific data
     @Caching(evict = {@CacheEvict(cacheNames = "product", key = "#id", cacheManager = "productCacheManager"),
             @CacheEvict(cacheNames = "product", cacheManager = "productCacheManager", allEntries = true)})
     public void deleteProduct(@PathVariable Long id) {
