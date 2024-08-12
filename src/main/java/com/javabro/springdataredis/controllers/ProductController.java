@@ -3,14 +3,10 @@ package com.javabro.springdataredis.controllers;
 import com.javabro.springdataredis.dtos.ProductDTO;
 import com.javabro.springdataredis.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/products")
@@ -26,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping
-    @Cacheable(cacheNames = "product", cacheManager = "productCacheManager")
+    @Cacheable(cacheNames = "product", cacheManager = "productCacheManager", sync = true)
     public List<ProductDTO> getAllProducts() {
         System.out.println("getAllProducts is called");
         return productService.getAllProducts();
@@ -40,7 +36,8 @@ public class ProductController {
     }
 
     @DeleteMapping("{id}")
-    @CacheEvict(cacheNames = "product", key = "#id", cacheManager = "productCacheManager")
+    @Caching(evict = {@CacheEvict(cacheNames = "product", key = "#id", cacheManager = "productCacheManager"),
+            @CacheEvict(cacheNames = "product", cacheManager = "productCacheManager", allEntries = true)})
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
